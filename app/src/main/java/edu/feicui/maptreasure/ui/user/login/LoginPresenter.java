@@ -1,86 +1,55 @@
 package edu.feicui.maptreasure.ui.user.login;
 
-import android.os.AsyncTask;
-
-import com.google.gson.Gson;
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
-
-import java.io.IOException;
 
 import edu.feicui.maptreasure.net.NetClient;
 import edu.feicui.maptreasure.ui.entity.LoginComplete;
 import edu.feicui.maptreasure.ui.entity.UserInfo;
-import okhttp3.Call;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+import edu.feicui.maptreasure.ui.userapi.UserApi;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by Administrator on 2016/7/12 0012.
  */
 public class LoginPresenter extends MvpNullObjectBasePresenter<LoginView>{
 
-    private Gson gson;
-    private UserInfo userInfo;
-    private Call call;
+    private Call<LoginComplete> call;
+
+
     public void login(UserInfo userInfo){
-        this.userInfo=userInfo;
-        gson=new Gson();
-        new LoginTask().execute();
+        UserApi userApi = NetClient.getInstance().getUserApi();
+        Call<LoginComplete> login = userApi.login(userInfo);
+        getView().showProgress();
+        login.enqueue(callBack);
     }
-
-    public final class LoginTask extends AsyncTask<Void,Void,LoginComplete>{
+    private Callback<LoginComplete> callBack=new Callback<LoginComplete>() {
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            getView().showProgress();
-        }
-
-        @Override
-        protected LoginComplete doInBackground(Void... params) {
-            OkHttpClient okHttpClient = NetClient.getInstance().getOkHttpClient();
-
-            String content=gson.toJson(userInfo);
-            RequestBody body=RequestBody.create(null, content);
-            Request request=new Request.Builder()
-                    .url("http://admin.syfeicuiedu.com/Handler/UserHandler.ashx?action=login")
-                    .post(body)
-                    .build();
-            if(call!=null){
-                call.cancel();
-            }
-            call=okHttpClient.newCall(request);
-            try {
-                Response response = call.execute();
-                if(response==null){
-                    return null;
-                }
-                if(response.isSuccessful()){
-                    String result = response.body().string();
-                    LoginComplete loginComplete = gson.fromJson(result, LoginComplete.class);
-                    return loginComplete;
-                }
-            } catch (IOException e) {
-                return null;
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(LoginComplete loginComplete) {
-            super.onPostExecute(loginComplete);
+        public void onResponse(Call<LoginComplete> call, Response<LoginComplete> response) {
             getView().hideProgress();
-            if (loginComplete==null) {
-                getView().showMessage("未知错误");
+            if(response.isSuccessful()){
+                LoginComplete result = response.body();
+                if(result==null){
+                    getView().showMessage("unknown error");
+                    return;
+                }
+                getView().showMessage(result.getMessage());
+                if(result.getCode()==1){
+                    getView().navigateToHome();
+                }
                 return;
             }
-            getView().showMessage(loginComplete.getMessage());
-            if(loginComplete.getCode()==1){
-                getView().navigateToHome();
-            }
+            getView().showMessage("网络连接异常");
         }
-    }
+
+        @Override
+        public void onFailure(Call<LoginComplete> call, Throwable t) {
+            getView().hideProgress();
+            getView().showMessage(t.getMessage());
+        }
+    };
+
 
     @Override
     public void detachView(boolean retainInstance) {
