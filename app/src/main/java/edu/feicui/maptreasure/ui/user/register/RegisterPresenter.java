@@ -5,6 +5,7 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 import edu.feicui.maptreasure.net.NetClient;
 import edu.feicui.maptreasure.ui.entity.RegisterComplete;
 import edu.feicui.maptreasure.ui.entity.UserInfo;
+import edu.feicui.maptreasure.ui.user.UserPref;
 import edu.feicui.maptreasure.ui.userapi.UserApi;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,6 +37,7 @@ public class RegisterPresenter extends MvpNullObjectBasePresenter<RegisterView>{
                 }
                 getView().showMessage(result.getMessage());
                 if(result.getCode()==1){
+                    UserPref.getInstance().setKeyTokenid(result.getTokenId());
                     getView().navigateToHome();
                 }
                 return;

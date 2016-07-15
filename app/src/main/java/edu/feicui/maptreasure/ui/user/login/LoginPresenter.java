@@ -5,6 +5,7 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 import edu.feicui.maptreasure.net.NetClient;
 import edu.feicui.maptreasure.ui.entity.LoginComplete;
 import edu.feicui.maptreasure.ui.entity.UserInfo;
+import edu.feicui.maptreasure.ui.user.UserPref;
 import edu.feicui.maptreasure.ui.userapi.UserApi;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -20,8 +21,10 @@ public class LoginPresenter extends MvpNullObjectBasePresenter<LoginView>{
 
     public void login(UserInfo userInfo){
         UserApi userApi = NetClient.getInstance().getUserApi();
+        // 执行登陆请求构建出call模型
         Call<LoginComplete> login = userApi.login(userInfo);
         getView().showProgress();
+        // Call模型异步执行
         login.enqueue(callBack);
     }
     private Callback<LoginComplete> callBack=new Callback<LoginComplete>() {
@@ -36,6 +39,8 @@ public class LoginPresenter extends MvpNullObjectBasePresenter<LoginView>{
                 }
                 getView().showMessage(result.getMessage());
                 if(result.getCode()==1){
+                    UserPref.getInstance().setKeyTokenid(result.getTokenId());
+                    UserPref.getInstance().setKeyPhoto(NetClient.BASE_URL+result.getIconUrl());
                     getView().navigateToHome();
                 }
                 return;

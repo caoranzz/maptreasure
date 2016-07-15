@@ -22,6 +22,7 @@ public class NetClient {
     private UserApi userApi;
 
     private NetClient(){
+        // 非严格模式
         gson=new GsonBuilder().setLenient().create();
 
         okHttpClient=new OkHttpClient.Builder()
@@ -31,6 +32,7 @@ public class NetClient {
                 .build();
         retrofit=new Retrofit.Builder()
                 .baseUrl(BASE_URL)
+              // 添加gson转换器
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(okHttpClient)
                 .build();
