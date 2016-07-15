@@ -11,10 +11,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import edu.feicui.maptreasure.R;
 import edu.feicui.maptreasure.commons.ActivityUtils;
+import edu.feicui.maptreasure.ui.user.UserPref;
 import edu.feicui.maptreasure.ui.user.account.AccountActivity;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -34,6 +37,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         activityUtils=new ActivityUtils(this);
         setContentView(R.layout.activity_home);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        String keyPhoto = UserPref.getInstance().getKeyPhoto();
+        if (keyPhoto != null) {
+            ImageLoader.getInstance().displayImage(keyPhoto, imageView);
+        }
     }
 
     @Override

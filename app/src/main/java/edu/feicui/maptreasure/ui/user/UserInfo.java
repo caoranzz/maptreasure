@@ -1,4 +1,4 @@
-package edu.feicui.maptreasure.ui.entity;
+package edu.feicui.maptreasure.ui.user;
 
 import com.google.gson.annotations.SerializedName;
 

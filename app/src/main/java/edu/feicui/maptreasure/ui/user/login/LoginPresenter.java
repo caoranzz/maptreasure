@@ -3,8 +3,7 @@ package edu.feicui.maptreasure.ui.user.login;
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import edu.feicui.maptreasure.net.NetClient;
-import edu.feicui.maptreasure.ui.entity.LoginComplete;
-import edu.feicui.maptreasure.ui.entity.UserInfo;
+import edu.feicui.maptreasure.ui.user.UserInfo;
 import edu.feicui.maptreasure.ui.user.UserPref;
 import edu.feicui.maptreasure.ui.userapi.UserApi;
 import retrofit2.Call;

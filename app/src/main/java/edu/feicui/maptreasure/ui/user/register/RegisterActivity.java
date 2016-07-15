@@ -23,7 +23,7 @@ import edu.feicui.maptreasure.commons.ActivityUtils;
 import edu.feicui.maptreasure.commons.RegexUtils;
 import edu.feicui.maptreasure.components.AlertDialogFragment;
 import edu.feicui.maptreasure.ui.MainActivity;
-import edu.feicui.maptreasure.ui.entity.UserInfo;
+import edu.feicui.maptreasure.ui.user.UserInfo;
 import edu.feicui.maptreasure.ui.home.HomeActivity;
 
 public class RegisterActivity extends MvpActivity<RegisterView,RegisterPresenter> implements RegisterView{
