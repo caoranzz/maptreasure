@@ -51,7 +51,6 @@ public class AccountPresenter extends MvpNullObjectBasePresenter<AccountView> {
                 }
 
             }
-
         }
 
         @Override
