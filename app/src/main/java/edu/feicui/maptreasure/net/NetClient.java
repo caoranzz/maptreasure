@@ -5,7 +5,8 @@ import com.google.gson.GsonBuilder;
 
 import java.util.concurrent.TimeUnit;
 
-import edu.feicui.maptreasure.ui.userapi.UserApi;
+import edu.feicui.maptreasure.treasure.TreasureApi;
+import edu.feicui.maptreasure.user.UserApi;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -20,6 +21,7 @@ public class NetClient {
     public static final String BASE_URL = "http://admin.syfeicuiedu.com";
     private Retrofit retrofit;
     private UserApi userApi;
+    private TreasureApi treasureApi;
 
     private NetClient(){
         // 非严格模式
@@ -57,5 +59,11 @@ public class NetClient {
         return netClient;
     }
 
+    public TreasureApi getTreasureApi(){
+        if(treasureApi==null){
+            treasureApi=retrofit.create(TreasureApi.class);
+        }
+        return treasureApi;
+    }
 
 }

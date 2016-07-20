@@ -7,7 +7,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
-import edu.feicui.maptreasure.ui.user.UserPref;
+import edu.feicui.maptreasure.user.UserPref;
 
 /**
  * Created by Administrator on 2016/7/11 0011.
